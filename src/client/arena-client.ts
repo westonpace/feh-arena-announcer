@@ -15,7 +15,7 @@ export class ArenaClient {
             uri: uri,
             method: methodString,
             json: true
-        }).then(rsp => {
+        }).then((rsp: any) => {
             return rsp as T;
         });
     }

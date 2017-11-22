@@ -17,6 +17,14 @@ export interface Contestant {
     name: string;
 }
 
+export interface Image {
+    author: string;
+    authorUrl: string;
+    name: string;
+    license: string;
+    url: string;
+}
+
 export interface Tier {
     name: string;
     contestants: Contestant[];
