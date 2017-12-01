@@ -4,4 +4,6 @@ function __export(m) {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./arena-client"));
+__export(require("./contestant-service"));
+__export(require("./image-service"));
 //# sourceMappingURL=index.js.map

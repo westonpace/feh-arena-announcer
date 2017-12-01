@@ -1,7 +1,7 @@
 import * as Discord from 'discord.js';
 
 import { Router } from './router';
-import { ArenaClient } from './client';
+import { ArenaClient, ContestantService, ImageService } from './client';
 import { ChannelsRepository, BroadcastService } from './channels';
 import { TaskService } from './task';
 import { MatchScanningService, MatchWatchingService } from './match-watching';
@@ -16,6 +16,8 @@ const broadcastService = new BroadcastService(channelsRepository, client);
 const taskService = new TaskService();
 const matchScanningService = new MatchScanningService(arenaClient);
 const matchWatchingService = new MatchWatchingService(arenaClient, broadcastService);
+const contestantService = new ContestantService(arenaClient);
+const imageService = new ImageService(arenaClient);
  
 client.on('ready', () => {
     new commands.PrintScheduleCommand(arenaClient).register(router);
@@ -24,6 +26,7 @@ client.on('ready', () => {
     new commands.PrintTierListCommand(arenaClient).register(router);
     new commands.TuneInCommand(matchWatchingService, matchScanningService).register(router);
     new commands.PrintTierRosterCommand(arenaClient).register(router);
+    new commands.ReportContestantRosterCommand(contestantService, imageService).register(router);
     new tasks.ReportNextMatchTask(matchScanningService, broadcastService).register(taskService);
     new tasks.PollMatchesTask(matchWatchingService).register(taskService);
     console.log('I am ready!');

@@ -15,6 +15,15 @@ export interface Message {
 
 export interface Contestant {
     name: string;
+    profileImageName: string;
+    gender: string;
+    background: {
+        hometown: string;
+        occupation: string;
+    };
+    boon: string;
+    bane: string;
+    fehClass: string;
 }
 
 export interface Image {

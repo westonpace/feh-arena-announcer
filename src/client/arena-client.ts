@@ -1,6 +1,6 @@
 import * as rp from 'request-promise-native';
 
-import { UnfinishedMatch, Message, Tier, TierStats } from './arena-model';
+import { UnfinishedMatch, Message, Tier, TierStats, Image, Contestant } from './arena-model';
 
 type Method = 'GET' | 'PUT' | 'POST' | 'DELETE';
 
@@ -22,6 +22,14 @@ export class ArenaClient {
 
     getUnfinishedMatches() {
         return this.apiCall<UnfinishedMatch[]>('GET', 'matches');
+    }
+
+    getImages() {
+        return this.apiCall<Image[]>('GET', 'images');
+    }
+
+    getContestants() {
+        return this.apiCall<Contestant[]>('GET', 'contestants');
     }
 
     getMessagesForMatchSinceTimestamp(matchId: number, timestamp: number) {

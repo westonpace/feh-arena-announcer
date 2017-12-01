@@ -16,6 +16,8 @@ const broadcastService = new channels_1.BroadcastService(channelsRepository, cli
 const taskService = new task_1.TaskService();
 const matchScanningService = new match_watching_1.MatchScanningService(arenaClient);
 const matchWatchingService = new match_watching_1.MatchWatchingService(arenaClient, broadcastService);
+const contestantService = new client_1.ContestantService(arenaClient);
+const imageService = new client_1.ImageService(arenaClient);
 client.on('ready', () => {
     new commands.PrintScheduleCommand(arenaClient).register(router);
     new commands.RegisterChannelCommand(channelsRepository).register(router);
@@ -23,6 +25,7 @@ client.on('ready', () => {
     new commands.PrintTierListCommand(arenaClient).register(router);
     new commands.TuneInCommand(matchWatchingService, matchScanningService).register(router);
     new commands.PrintTierRosterCommand(arenaClient).register(router);
+    new commands.ReportContestantRosterCommand(contestantService, imageService).register(router);
     new tasks.ReportNextMatchTask(matchScanningService, broadcastService).register(taskService);
     new tasks.PollMatchesTask(matchWatchingService).register(taskService);
     console.log('I am ready!');

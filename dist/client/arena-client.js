@@ -12,12 +12,18 @@ class ArenaClient {
             uri: uri,
             method: methodString,
             json: true
-        }).then(rsp => {
+        }).then((rsp) => {
             return rsp;
         });
     }
     getUnfinishedMatches() {
         return this.apiCall('GET', 'matches');
+    }
+    getImages() {
+        return this.apiCall('GET', 'images');
+    }
+    getContestants() {
+        return this.apiCall('GET', 'contestants');
     }
     getMessagesForMatchSinceTimestamp(matchId, timestamp) {
         return this.apiCall('GET', 'matches', matchId.toString(), 'messages?since=' + timestamp);
