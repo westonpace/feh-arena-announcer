@@ -9,3 +9,5 @@ npm-debug*
 auto-save-list
 tramp
 .\#*
+stdout.log
+stderr.log
