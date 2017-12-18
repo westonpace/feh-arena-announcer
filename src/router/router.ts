@@ -45,7 +45,7 @@ export class Router {
 
     private routes: Route[] = [];
 
-    constructor(private commandPrefix: string | null = null) {
+    constructor(public commandPrefix: string | null = null) {
 
     }
 

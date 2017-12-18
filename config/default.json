@@ -2,5 +2,8 @@
     "discord": {
         "token": "bad-token",
         "name": "default"
+    },
+    "app": {
+        "default-command-prefix": "!"
     }
 }

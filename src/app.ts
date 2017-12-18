@@ -10,7 +10,7 @@ import * as commands from './commands';
 import * as tasks from './tasks';
 
 const client = new Discord.Client();
-const router = new Router('!');
+const router = new Router(config.get('app.default-command-prefix'));
 const arenaClient = new ArenaClient();
 const channelsRepository = new ChannelsRepository();
 const broadcastService = new BroadcastService(channelsRepository, client);
