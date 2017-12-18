@@ -9,6 +9,9 @@
     "build:test": "npm run clean && tsc --project ./tsconfig.jasmine.json",
     "debug": "npm run build && node --inspect-brk dist/app.js",
     "start": "npm run build && node dist/app.js",
+    "fstart": "forever start -l aa.log -a -o stdout.log -e stderr.log -c 'npm start' .",
+    "flist": "forever list",
+    "fstop": "forever stop /home/bitnami/apps/feh-arena-announcer",
     "test": "npm run build:test && jasmine JASMINE_CONFIG_PATH=jasmine.json",
     "test:debug": "npm run build:test && node --inspect-brk node_modules/jasmine/bin/jasmine.js JASMINE_CONFIG_PATH=jasmine.json"
   },
@@ -25,11 +28,13 @@
     "jasmine": "^2.8.0",
     "jasmine-spec-reporter": "^4.2.1",
     "jasmine-ts-console-reporter": "^1.0.2",
-    "rimraf": "^2.6.2"
+    "rimraf": "^2.6.2",
+    "typescript": "^2.6.2"
   },
   "dependencies": {
     "config": "^1.28.1",
     "discord.js": "^11.2.1",
+    "forever": "^0.15.3",
     "jasmine-promises": "^0.4.1",
     "moment": "^2.19.1",
     "random-seed": "^0.3.0",

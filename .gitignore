@@ -1,3 +1,13 @@
 node_modules/
 dist/
 npm-debug*
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+stdout.log
+stderr.log
