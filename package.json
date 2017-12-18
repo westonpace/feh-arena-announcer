@@ -15,6 +15,7 @@
   "author": "Weston Pace",
   "license": "MIT",
   "devDependencies": {
+    "@types/config": "0.0.33",
     "@types/jasmine": "^2.6.0",
     "@types/moment": "^2.13.0",
     "@types/node": "^8.0.31",
@@ -27,6 +28,7 @@
     "rimraf": "^2.6.2"
   },
   "dependencies": {
+    "config": "^1.28.1",
     "discord.js": "^11.2.1",
     "jasmine-promises": "^0.4.1",
     "moment": "^2.19.1",

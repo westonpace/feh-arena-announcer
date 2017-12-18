@@ -9,4 +9,5 @@ __export(require("./register-channel"));
 __export(require("./report-channel-status"));
 __export(require("./tier"));
 __export(require("./tune-in"));
+__export(require("./utility"));
 //# sourceMappingURL=index.js.map

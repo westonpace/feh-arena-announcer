@@ -1,4 +1,5 @@
 import * as Discord from 'discord.js';
+import * as config from 'config';
 
 import { Router } from './router';
 import { ArenaClient, ContestantService, ImageService } from './client';
@@ -20,6 +21,7 @@ const contestantService = new ContestantService(arenaClient);
 const imageService = new ImageService(arenaClient);
  
 client.on('ready', () => {
+    new commands.PrintNameCommand(config.get('discord.name')).register(router);
     new commands.PrintScheduleCommand(arenaClient).register(router);
     new commands.RegisterChannelCommand(channelsRepository).register(router);
     new commands.ReportChannelStatusCommand(channelsRepository).register(router);
@@ -36,6 +38,6 @@ client.on('message', message => {
     router.route(message);
 });
  
-client.login('MzY4NTE0OTYxMzc2NTQyNzIw.DMLKog.lndSRBiiTJIbGk4PRxWW9GdC6Tw').catch(err => {
+client.login(config.get('discord.token')).catch(err => {
     console.log(err);
 });

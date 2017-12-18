@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const Discord = require("discord.js");
+const config = require("config");
 const router_1 = require("./router");
 const client_1 = require("./client");
 const channels_1 = require("./channels");
@@ -19,6 +20,7 @@ const matchWatchingService = new match_watching_1.MatchWatchingService(arenaClie
 const contestantService = new client_1.ContestantService(arenaClient);
 const imageService = new client_1.ImageService(arenaClient);
 client.on('ready', () => {
+    new commands.PrintNameCommand(config.get('discord.name')).register(router);
     new commands.PrintScheduleCommand(arenaClient).register(router);
     new commands.RegisterChannelCommand(channelsRepository).register(router);
     new commands.ReportChannelStatusCommand(channelsRepository).register(router);
@@ -33,7 +35,7 @@ client.on('ready', () => {
 client.on('message', message => {
     router.route(message);
 });
-client.login('MzY4NTE0OTYxMzc2NTQyNzIw.DMLKog.lndSRBiiTJIbGk4PRxWW9GdC6Tw').catch(err => {
+client.login(config.get('discord.token')).catch(err => {
     console.log(err);
 });
 //# sourceMappingURL=app.js.map
