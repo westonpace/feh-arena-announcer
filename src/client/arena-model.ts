@@ -36,14 +36,13 @@ export interface Image {
 
 export interface Tier {
     name: string;
-    contestants: Contestant[];
+    contestants: string[];
 }
 
 export interface ContestantStats {
+    _id: string;
     wins: number;
     losses: number;
     born: number;
     died: number;
 }
-
-export type TierStats = { [key: string]: ContestantStats };

@@ -1,7 +1,7 @@
 import { Message } from 'discord.js';
 
 import { Router } from '../../router';
-import { ArenaClient, Tier, TierStats } from '../../client';
+import { ArenaClient, Tier, ContestantStats } from '../../client';
 
 export class PrintTierRosterCommand {
 
@@ -30,15 +30,24 @@ export class PrintTierRosterCommand {
         return this.arenaClient.getTierStats(tierName);
     }
 
-    private formatRoster(tier: Tier, stats: TierStats) {
-        let contestantsWithStats = tier.contestants.map(contestant => {
-            let stat = stats[contestant.name];
-            return {
-                name: contestant.name,
-                wins: stat.wins,
-                losses: stat.losses,
-                score: stat.wins - stat.losses
-            };
+    private formatRoster(tier: Tier, stats: ContestantStats[]) {
+        let contestantsWithStats = tier.contestants.map(contestantName => {
+            let stat = stats.find(s => s._id === contestantName);
+            if (stat) {
+                return {
+                    name: contestantName,
+                    wins: stat.wins,
+                    losses: stat.losses,
+                    score: stat.wins - stat.losses
+                };
+            } else {
+                return {
+                    name: contestantName,
+                    wins: 0,
+                    losses: 0,
+                    score: 0
+                }
+            }
         });
         contestantsWithStats.sort((a, b) => Math.sign(a.score - b.score));
         return 'Roster for tier **' + tier.name + '**\n' +
