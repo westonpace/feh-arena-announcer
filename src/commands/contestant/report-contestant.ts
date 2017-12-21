@@ -19,6 +19,7 @@ export class ReportContestantRosterCommand {
                 message.reply({
                     embed: {
                         title: contestant.name,
+                        color: 16733986,
                         thumbnail: {
                             url: image.url,
                             height: 80,
