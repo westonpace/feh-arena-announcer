@@ -18,13 +18,15 @@
   "author": "Weston Pace",
   "license": "MIT",
   "devDependencies": {
+    "@types/cls-hooked": "^4.2.0",
     "@types/config": "0.0.33",
     "@types/jasmine": "^2.6.0",
     "@types/moment": "^2.13.0",
     "@types/node": "^8.0.31",
     "@types/random-seed": "^0.3.2",
-    "@types/request-promise-native": "^1.0.7",
+    "@types/request-promise-native": "^1.0.10",
     "@types/shuffle-array": "0.0.28",
+    "@types/winston": "^2.3.7",
     "jasmine": "^2.8.0",
     "jasmine-spec-reporter": "^4.2.1",
     "jasmine-ts-console-reporter": "^1.0.2",
@@ -32,17 +34,18 @@
     "typescript": "^2.6.2"
   },
   "dependencies": {
+    "cls-hooked": "^4.2.2",
     "config": "^1.28.1",
     "discord.js": "^11.2.1",
     "forever": "^0.15.3",
     "jasmine-promises": "^0.4.1",
     "moment": "^2.19.1",
     "random-seed": "^0.3.0",
-    "request": "^2.83.0",
     "request-promise-native": "^1.0.5",
     "rxjs": "^5.4.3",
     "shuffle-array": "^1.0.1",
     "source-map-support": "^0.4.18",
-    "uws": "^8.14.1"
+    "uws": "^8.14.1",
+    "winston": "^2.4.0"
   }
 }

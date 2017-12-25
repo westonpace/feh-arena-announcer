@@ -29,6 +29,7 @@ client.on('ready', () => {
     new commands.TuneInCommand(matchWatchingService, matchScanningService).register(router);
     new commands.PrintTierRosterCommand(arenaClient).register(router);
     new commands.ReportContestantRosterCommand(contestantService, imageService).register(router);
+    new commands.WhoAmICommand(arenaClient).register(router);
     new tasks.ReportNextMatchTask(matchScanningService, broadcastService).register(taskService);
     new tasks.PollMatchesTask(matchWatchingService).register(taskService);
     console.log('I am ready!');

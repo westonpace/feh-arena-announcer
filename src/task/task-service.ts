@@ -1,9 +1,13 @@
+import { Clogger } from '../util';
+
 export class TaskService {
+
+    private logger = new Clogger();
 
     scheduleRepeatingTask(interval: number, run: () => Promise<void>) {
         setInterval(() => {
             run().catch(err => {
-                console.log('Task Error: ' + err);
+                this.logger.exception(err);
             });
         }, interval);
     }

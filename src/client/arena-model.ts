@@ -34,6 +34,11 @@ export interface Image {
     url: string;
 }
 
+export interface User {
+    _id: string;
+    name: string;
+}
+
 export interface Tier {
     name: string;
     contestants: string[];

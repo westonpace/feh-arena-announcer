@@ -1,6 +1,8 @@
 import * as rp from 'request-promise-native';
 
-import { UnfinishedMatch, Message, ContestantStats, Tier, Image, Contestant } from './arena-model';
+import { DiscordContext } from '../context';
+
+import { UnfinishedMatch, Message, ContestantStats, Tier, Image, Contestant, User } from './arena-model';
 
 type Method = 'GET' | 'PUT' | 'POST' | 'DELETE';
 
@@ -8,40 +10,85 @@ export class ArenaClient {
 
     private baseUrl = 'http://localhost:3000/';
 
-    private apiCall<T>(method: Method, ...parts: string[]): Promise<T> {
+    private getBearerAuth() {
+        let user = this.discordContext.tryGetCurrentUser();
+        if (user) {
+            return { bearer: this.discordContext.currentUser.id }
+        } else {
+            return undefined;
+        }
+    }
+
+    private readOnlyApiCall<T>(method: Method, ...parts: string[]) {
+        return this.apiCall<void, T>(method, null, ...parts);
+    }
+
+    private async apiCall<R, T>(method: Method, entity: R | null, ...parts: string[]): Promise<T> {
         var methodString = method
         var uri = this.baseUrl + parts.join('/');
-        return rp({
+        let params: rp.OptionsWithUri = {
             uri: uri,
+            auth: this.getBearerAuth(),
             method: methodString,
             json: true
-        }).then((rsp: any) => {
+        };
+        if (entity) {
+            params.body = entity;
+        }
+        try {
+            let rsp = await rp(params);
             return rsp as T;
-        });
+        } catch (err) {
+            if (err.name && err.name === 'StatusCodeError') {
+                if(err.statusCode === 401) {
+                    await this.register();
+                    return this.apiCall<R, T>(method, entity, ...parts);
+                }
+            }
+            throw err;
+        }
+    }
+
+    private register() {
+        return this.apiCall<String, void>(
+            'POST',
+            this.discordContext.currentUser.username,
+            'users'
+        );
+    }
+
+    private discordContext = new DiscordContext();
+
+    constructor() {
+
     }
 
     getUnfinishedMatches() {
-        return this.apiCall<UnfinishedMatch[]>('GET', 'matches');
+        return this.readOnlyApiCall<UnfinishedMatch[]>('GET', 'matches');
+    }
+
+    getCurrentUser() {
+        return this.readOnlyApiCall<User>('GET', 'users', 'me');
     }
 
     getImages() {
-        return this.apiCall<Image[]>('GET', 'images');
+        return this.readOnlyApiCall<Image[]>('GET', 'images');
     }
 
     getContestants() {
-        return this.apiCall<Contestant[]>('GET', 'contestants');
+        return this.readOnlyApiCall<Contestant[]>('GET', 'contestants');
     }
 
     getMessagesForMatchSinceTimestamp(matchId: number, timestamp: number) {
-        return this.apiCall<Message[]>('GET', 'matches', matchId.toString(), 'messages?since=' + timestamp);
+        return this.readOnlyApiCall<Message[]>('GET', 'matches', matchId.toString(), 'messages?since=' + timestamp);
     }
 
     getTiers() {
-        return this.apiCall<Tier[]>('GET', 'tiers');
+        return this.readOnlyApiCall<Tier[]>('GET', 'tiers');
     }
 
     getTierStats(tierName: string) {
-        return this.apiCall<ContestantStats[]>('GET', 'tiers', tierName, 'statistics');
+        return this.readOnlyApiCall<ContestantStats[]>('GET', 'tiers', tierName, 'statistics');
     }
 
 }

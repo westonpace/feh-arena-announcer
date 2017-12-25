@@ -1,5 +1,7 @@
 import * as Discord from 'discord.js';
 
+import { DiscordContext, TxContext } from '../context';
+
 type RouteCallback = (message: Discord.Message, params: { [key: string]: string }, args: string[]) => Promise<void>;
 
 class RouteContext {
@@ -44,6 +46,9 @@ class LiteralMatcher implements RouteMatcher {
 export class Router {
 
     private routes: Route[] = [];
+    private discordContext = new DiscordContext();
+    private txContext = new TxContext();
+    private messageCounter = 0;
 
     constructor(public commandPrefix: string | null = null) {
 
@@ -79,14 +84,14 @@ export class Router {
         return true;
     }
 
-    route(message: Discord.Message): Promise<void> {
+    async route(message: Discord.Message): Promise<void> {
         let messageText = message.content;
 
         if(this.commandPrefix) {
             if(messageText.toLowerCase().startsWith(this.commandPrefix.toLowerCase())) {
                 messageText = messageText.slice(this.commandPrefix.length);
             } else {
-                return Promise.resolve();
+                return;
             }
         }
 
@@ -97,7 +102,7 @@ export class Router {
             if(this.commandPrefix) {
                 message.reply('I see you are trying to say something...how does that make you feel?');
             }
-            return Promise.resolve();
+            return;
         }
 
         let context = new RouteContext();
@@ -110,14 +115,18 @@ export class Router {
         }
 
         try {
-            return route.callback(message, context.params, context.args).catch(err => {
-                console.log(err);
-                message.reply('Oh...oh no!  I can clean this up.  Pleas don\'t kill me!  *puppy dog eyes*');
+            await this.txContext.beginTx('router-' + this.messageCounter++, async () => {
+                await this.discordContext.beginTx(message, async () => {
+                    await (route as Route).callback(message, context.params, context.args).catch(err => {
+                        console.log(err);
+                        message.reply('Oh...oh no!  I can clean this up.  Pleas don\'t kill me!  *puppy dog eyes*');
+                    });
+                });
             });
-        } catch (err) {
+        }
+        catch (err) {
             console.log(err);
             message.reply('Look what you made me do!  *grabs shoulders* LOOK WHAT YOU MADE ME DO!');
-            return Promise.resolve();
         }
     }
 
