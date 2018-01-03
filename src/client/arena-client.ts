@@ -1,8 +1,9 @@
 import * as rp from 'request-promise-native';
+import * as queryString from 'query-string';
 
 import { DiscordContext } from '../context';
 
-import { UnfinishedMatch, Message, ContestantStats, Tier, Image, Contestant, User } from './arena-model';
+import { UnfinishedMatch, FinishedMatch, Message, ContestantStats, Tier, Image, Contestant, User, MatchHistoryPagingParameters } from './arena-model';
 
 type Method = 'GET' | 'PUT' | 'POST' | 'DELETE';
 
@@ -89,6 +90,11 @@ export class ArenaClient {
 
     getTierStats(tierName: string) {
         return this.readOnlyApiCall<ContestantStats[]>('GET', 'tiers', tierName, 'statistics');
+    }
+
+    getFinishedMatches(pagingParameters: MatchHistoryPagingParameters) {
+        let query = queryString.stringify(pagingParameters);
+        return this.readOnlyApiCall<FinishedMatch[]>('GET', 'match-history?' + query);
     }
 
 }

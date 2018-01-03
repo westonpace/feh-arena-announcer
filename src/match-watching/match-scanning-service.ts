@@ -17,13 +17,13 @@ export class MatchScanningService {
         let unfinishedMatches = await this.arenaClient.getUnfinishedMatches();
         let nextMatch = unfinishedMatches[0];
 
-        if(nextMatch.id === this.lastReportedMatchId) {
+        if(nextMatch._id === this.lastReportedMatchId) {
             return null;
         }
 
         let now = getCurrentTimestamp();
         if(nextMatch.startTime - now < ms) {
-            this.lastReportedMatchId = nextMatch.id;
+            this.lastReportedMatchId = nextMatch._id;
             return nextMatch;
         }
 

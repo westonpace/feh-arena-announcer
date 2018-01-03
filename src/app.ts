@@ -1,9 +1,12 @@
+import 'source-map-support/register'
+
 import * as Discord from 'discord.js';
 import * as config from 'config';
 
 import { Router } from './router';
-import { ArenaClient, ContestantService, ImageService } from './client';
+import { ArenaClient, ContestantService, ImageService, MatchService } from './client';
 import { ChannelsRepository, BroadcastService } from './channels';
+import { UserContextService } from './context';
 import { TaskService } from './task';
 import { MatchScanningService, MatchWatchingService } from './match-watching';
 import * as commands from './commands';
@@ -15,9 +18,11 @@ const arenaClient = new ArenaClient();
 const channelsRepository = new ChannelsRepository();
 const broadcastService = new BroadcastService(channelsRepository, client);
 const taskService = new TaskService();
+const userContextService = new UserContextService();
 const matchScanningService = new MatchScanningService(arenaClient);
 const matchWatchingService = new MatchWatchingService(arenaClient, broadcastService);
 const contestantService = new ContestantService(arenaClient);
+const matchService = new MatchService(arenaClient, userContextService);
 const imageService = new ImageService(arenaClient);
  
 client.on('ready', () => {
@@ -30,6 +35,7 @@ client.on('ready', () => {
     new commands.PrintTierRosterCommand(arenaClient).register(router);
     new commands.ReportContestantRosterCommand(contestantService, imageService).register(router);
     new commands.WhoAmICommand(arenaClient).register(router);
+    new commands.PrintMatchHistoryCommand(matchService, router).register(router);
     new tasks.ReportNextMatchTask(matchScanningService, broadcastService).register(taskService);
     new tasks.PollMatchesTask(matchWatchingService).register(taskService);
     console.log('I am ready!');

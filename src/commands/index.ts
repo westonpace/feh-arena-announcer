@@ -1,4 +1,5 @@
 export * from './contestant';
+export * from './matches';
 export * from './print-schedule';
 export * from './register-channel';
 export * from './report-channel-status';

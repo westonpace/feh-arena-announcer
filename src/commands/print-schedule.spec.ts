@@ -18,13 +18,13 @@ describe('Print Schedule Command Tests', () => {
             contestantTwoName:'Helen',
             startTime:1508036040880,
             endTime:-1,
-            id:0 
+            _id:0 
         }, {
             contestantOneName:'Exechio',
             contestantTwoName:'Mustafa',
             startTime:1508061240880,
             endTime:-1,
-            id:1
+            _id:1
         }];
         return testHarness.sendMessage('schedule').then(() => {
             let expectedMessage = 

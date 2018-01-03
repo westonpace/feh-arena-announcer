@@ -45,6 +45,7 @@ class LiteralMatcher implements RouteMatcher {
 
 export class Router {
 
+    private temporaryRoutes: Route[] = [];
     private routes: Route[] = [];
     private discordContext = new DiscordContext();
     private txContext = new TxContext();
@@ -65,12 +66,19 @@ export class Router {
     addRoute(route: string[], callback: RouteCallback) {
         this.routes.push({
             path: route.map(pathPart => this.createMatcher(pathPart)),
-            callback: callback
+            callback
         });
     }
 
-    findRoute(messageParts: string[]) {
-        return this.routes
+    addTemporaryRoute(route: string[], callback: RouteCallback) {
+        this.temporaryRoutes.push({
+            path: route.map(pathPart => this.createMatcher(pathPart)),
+            callback
+        });
+    }
+
+    findRoute(routes: Route[], messageParts: string[]) {
+        return routes
         .filter(route => route.path.length <= messageParts.length)
         .find(route => this.routeMatches(route, messageParts));
     }
@@ -96,7 +104,14 @@ export class Router {
         }
 
         let messageParts = messageText.split(/\s+/g);
-        let route = this.findRoute(messageParts);
+        let route = this.findRoute(this.temporaryRoutes, messageParts);
+
+        if (!route) {
+            route = this.findRoute(this.routes, messageParts);
+            if (route) {
+                this.temporaryRoutes = [];
+            }
+        }
 
         if(!route) {
             if(this.commandPrefix) {

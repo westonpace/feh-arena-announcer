@@ -1,9 +1,16 @@
 export interface UnfinishedMatch {
-    id: number;
+    _id: number;
     contestantOneName: string;
     contestantTwoName: string;
     startTime: number;
     endTime: number;
+}
+
+export interface FinishedMatch extends UnfinishedMatch {
+    result: {
+        loserDied: boolean;
+        contestantOneWon: boolean;
+    }
 }
 
 export interface Message {
@@ -50,4 +57,11 @@ export interface ContestantStats {
     losses: number;
     born: number;
     died: number;
+}
+
+export interface MatchHistoryPagingParameters {
+    timeStart?: number;
+    timeEnd?: number;
+    idStart?: number;
+    idEnd?: number;
 }
