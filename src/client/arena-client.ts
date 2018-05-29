@@ -9,8 +9,6 @@ type Method = 'GET' | 'PUT' | 'POST' | 'DELETE';
 
 export class ArenaClient {
 
-    private baseUrl = 'http://localhost:4000/';
-
     private getBearerAuth() {
         let user = this.discordContext.tryGetCurrentUser();
         if (user) {
@@ -60,7 +58,7 @@ export class ArenaClient {
 
     private discordContext = new DiscordContext();
 
-    constructor() {
+    constructor(private baseUrl: string) {
 
     }
 

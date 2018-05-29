@@ -14,7 +14,7 @@ import * as tasks from './tasks';
 
 const client = new Discord.Client();
 const router = new Router(config.get('app.default-command-prefix'));
-const arenaClient = new ArenaClient();
+const arenaClient = new ArenaClient(config.get('arena.url'));
 const channelsRepository = new ChannelsRepository();
 const broadcastService = new BroadcastService(channelsRepository, client);
 const taskService = new TaskService();
