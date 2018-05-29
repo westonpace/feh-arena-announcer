@@ -9,7 +9,7 @@ type Method = 'GET' | 'PUT' | 'POST' | 'DELETE';
 
 export class ArenaClient {
 
-    private baseUrl = 'http://localhost:3000/';
+    private baseUrl = 'http://localhost:4000/';
 
     private getBearerAuth() {
         let user = this.discordContext.tryGetCurrentUser();

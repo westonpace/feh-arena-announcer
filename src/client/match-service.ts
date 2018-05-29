@@ -3,7 +3,7 @@ import { UserContextService } from '../context';
 import { ArenaClient } from './arena-client';
 import { FinishedMatch } from './arena-model';
 
-export class MatchHistoryCursor {
+export interface MatchHistoryCursor {
     endTime: number | null;
     previousEndTimes: number[];
     lastResults: FinishedMatch[];
